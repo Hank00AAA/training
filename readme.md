@@ -2,8 +2,10 @@
 It is a repo to record my training.
 
 <!---start--->
-[708][#708]
+[708](#708)
 <!---end--->
+
+
 
 ## 708
 

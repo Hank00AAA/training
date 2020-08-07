@@ -28,7 +28,7 @@ allLine=`echo ${allLine} | tr '[:upper:]' '[:lower:]'`
 echo "trans to lower case: ${allLine}"
 
 # 把所有二级标题组装,如 Leetcode 708 ---> [Leetcode 708](#leetcode-708)
-context=(`echo ${allLine} | awk '{split($0,a," "); for(i in a) {print "["a[i]"]""[#"a[i]"]"}}'`)
+context=(`echo ${allLine} | awk '{split($0,a," "); for(i in a) {print "["a[i]"]""(#"a[i]")"}}'`)
 
 # 把context插入到readme
 for ele in ${context[@]};do
