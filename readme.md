@@ -1,9 +1,11 @@
 # Train
 It is a repo to record my training.
 
-[TOC]
+<!---start--->
+[708][#708]
+<!---end--->
 
-## Leetcode 708
+## 708
 
 ###  思路
 循环升序链表插入不难，找到最小值/最大值所在的点，就可以分情况讨论插入了。
