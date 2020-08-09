@@ -2,12 +2,74 @@
 It is a repo to record my training.
 
 <!---start--->
-[5486](#5486)  
+[173](#173)  
 [708](#708)  
 [5483](#5483)  
 [5484](#5484)  
 [5471](#5471)  
+[5486](#5486)  
 <!---end--->
+
+## 173
+### 思路
+二叉树迭代器，这道题其实就是把栈存起来，参考二叉树中序遍历的非递归实现。
+
+### code
+```
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class BSTIterator {
+public:
+    vector<TreeNode *> v;
+    bool flag;
+
+    BSTIterator(TreeNode* root) {
+        if (!root) {
+            return;
+        }
+        
+        v.push_back(root);
+        flag = false;
+    }
+    
+    /** @return the next smallest number */
+    int next() {
+        TreeNode *cur = v.back();
+
+        while (!flag && cur->left) {
+            v.push_back(cur->left);
+            cur = cur->left;
+        }
+        flag = true;
+        v.pop_back();
+        if (cur->right) {
+            v.push_back(cur->right);
+            flag = false;
+        }
+        
+        return cur->val;        
+    }
+    
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !v.empty();
+    }
+};
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator* obj = new BSTIterator(root);
+ * int param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
+```
 
 ## 5486
 ### 思路
