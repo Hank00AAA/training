@@ -2,11 +2,54 @@
 It is a repo to record my training.
 
 <!---start--->
-[5471](#5471)  
+[5486](#5486)  
 [708](#708)  
 [5483](#5483)  
 [5484](#5484)  
+[5471](#5471)  
 <!---end--->
+
+## 5486
+### 思路
+这道题是动态规划，设dp[l][r]是从[l, r]的切割最小成本，dp[l][r] = min(l到r之间所有切割点i,dp[l][i] + dp[i][r]) + r - l;
+
+###  code
+```
+class Solution {
+public:
+
+    vector<vector<int>> dp;
+
+    int dfs(int l, int r, vector<int> &v)
+    {
+        if (dp[l][r] != -1) {
+            return dp[l][r];
+        }
+
+        if (l + 1 == r) {
+            dp[l + 1][r] = 0;
+            return 0; 
+        }
+
+        for (int i = l + 1; i < r; ++i) {
+            int t = dfs(l, i, v) + dfs(i, r, v) + v[r] - v[l];
+            if (dp[l][r] == -1 || dp[l][r] > t) {
+                dp[l][r] = t;
+            }
+        }
+
+        return dp[l][r];
+    }
+
+    int minCost(int n, vector<int>& cuts) {
+        dp.resize(103, vector<int>(103, -1));
+        cuts.push_back(0);
+        cuts.push_back(n);
+        sort(cuts.begin(), cuts.end());
+        return dfs(0, cuts.size() - 1, cuts);
+    }
+};
+```
 
 ## 5471
 ### 思路
