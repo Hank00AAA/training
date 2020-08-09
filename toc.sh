@@ -34,6 +34,6 @@ context=(`echo ${allLine} | awk '{split($0,a," "); for(i in a) {print "["a[i]"]"
 for ele in ${context[@]};do
     s=`grep -n ${startText} readme.md | awk '{split($0,a,":"); print a[1]}'`
     sed -i '' "${s}a\\
-    ${ele}\\\n
+    ${ele}\ 
     " readme.md
 done
