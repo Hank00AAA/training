@@ -10,6 +10,57 @@ It is a repo to record my training.
 [5486](#5486)  
 <!---end--->
 
+## 459
+### 思路
+这道题就是周期串，看到有个解答挺厉害的，s + s，然后就是计算s在(s+s)串中第二次出现的位置，如果是周期串，那么第二次出现的位置必定不为s.len
+
+### code
+```
+class Solution {
+public:
+
+    bool check(string &s, int len)
+    {
+        if (s.size() % len) {
+            return false;
+        }
+
+        int start = 0;
+        int i = 0;
+        while (i < s.size()) {
+            if (start >= len) {
+                start = 0;
+            }
+
+            if (s[i] != s[start]) {
+                return false;
+            }
+            ++i;
+            ++start;
+        }
+
+        return true;
+    }
+
+    bool repeatedSubstringPattern(string s) {
+        int len = 1;
+
+        if (s.empty()) {
+            return false;
+        }
+
+        while (len <= s.size() / 2) {
+            if (check(s, len)) {
+                return true;
+            }
+            ++len;
+        }
+
+        return false;
+    }
+};
+```
+
 ## 173
 ### 思路
 二叉树迭代器，这道题其实就是把栈存起来，参考二叉树中序遍历的非递归实现。
