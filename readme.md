@@ -2,13 +2,146 @@
 It is a repo to record my training.
 
 <!---start--->
-[173](#173)  
+[4](#4)  
 [708](#708)  
 [5483](#5483)  
 [5484](#5484)  
 [5471](#5471)  
 [5486](#5486)  
+[173](#173)  
+[459](#459)  
+[3](#3)  
 <!---end--->
+
+## 4
+### 中位数
+两种做法，
+1. 利用割的思想。
+123 | 456
+123 | 456 
+条件：
+1. cut1 + cut2 = (arr.size() + 1) / 2
+2. maxLeft(cut1) < minRight(cut2)
+3. maxLeft(cut2) < minRight(cut1)
+
+2. 利用求第k个小的数字
+
+### code 
+```
+// cut
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        if (nums1.size() > nums2.size()) return findMedianSortedArrays(nums2, nums1);
+        int l = 0, r = nums1.size();
+        int L1, L2, R1, R2, cut1, cut2;
+        int len = (nums1.size() + nums2.size());
+        
+        while (l <= r) {
+            cut1 = l + (r - l) / 2;
+            cut2 = (len + 1) / 2 - cut1;
+            L1 = cut1 == 0 ? INT_MIN : nums1[cut1 - 1];
+            R1 = cut1 >= nums1.size() ? INT_MAX : nums1[cut1];
+            L2 = cut2 == 0 ? INT_MIN : nums2[cut2 - 1];
+            R2 = cut2 >= nums2.size() ? INT_MAX : nums2[cut2];
+
+            if (L1 > R2) {
+                r = cut1 - 1;
+                continue;
+            }
+
+            if (L2 > R1) {
+                l = cut1 + 1;
+                continue;
+            }
+
+            break;
+        }
+
+        double res;
+        if (len % 2 == 1) {
+            res = max(L1, L2);
+        } else {
+            res = (max(L1, L2) + min(R1, R2)) / 2.0;
+        }
+
+        return res;
+    }
+};
+```
+
+```
+// k
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int len = nums1.size() + nums2.size();
+        if (len % 2 == 1) {
+            return findK(nums1, nums2, (len + 1) / 2);
+        } else {
+            return (findK(nums1, nums2, (len + 1) / 2) + findK(nums1, nums2, (len + 1) / 2 + 1)) / 2.0;
+        }
+    }
+
+    int findK(vector<int>& nums1, vector<int>& nums2, int k) {
+        int s1 = 0, s2 = 0;
+        int l1, l2;
+        
+        while (s1 < nums1.size() && s2 < nums2.size()) {
+            if (k == 1) {
+                break;
+            }
+
+            l1 = min(s1 + k / 2 - 1, int(nums1.size() - 1));
+            l2 = min(s2 + k / 2 - 1, int(nums2.size() - 1));
+            if (nums1[l1] < nums2[l2]) {
+                k -= l1 - s1 + 1;
+                s1 = l1 + 1;
+            } else {
+                k -= l2 - s2 + 1;
+                s2 = l2 + 1;
+            }
+        }
+        
+        if (s1 >= nums1.size()) {
+            return nums2[s2 + k - 1];
+        }
+
+        if (s2 >= nums2.size()) {
+            return nums1[s1 + k - 1];
+        }
+        
+        return min(nums1[s1], nums2[s2]);
+    }
+
+};
+```
+
+
+## 3
+### 思路
+记录下标，O(n)
+
+### code
+```
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> c;
+        c.resize(256, -1);
+        int last = -1;
+        int maxLen = 0;
+
+        for (int i = 0; i < s.size(); ++i) {
+            last = max(last, c[s[i]]);
+            c[s[i]] = i;
+            maxLen = max(maxLen, i - last);
+        }
+
+        return maxLen;
+    }
+};
+```
 
 ## 459
 ### 思路
