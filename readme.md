@@ -2,7 +2,7 @@
 It is a repo to record my training.
 
 <!---start--->
-[4](#4)  
+[10](#10)  
 [708](#708)  
 [5483](#5483)  
 [5484](#5484)  
@@ -11,7 +11,78 @@ It is a repo to record my training.
 [173](#173)  
 [459](#459)  
 [3](#3)  
+[4](#4)  
+[9](#9)  
 <!---end--->
+
+## 10
+### mind
+这道题，如果不是*，其实是就是dp[i][j] = isSame && dp[i - 1][j - 1]。主要关注*的情况，当为*时，
+- 匹配0个，dp[i][j] = dp[i][j - 2]
+- 匹配1个，dp[i][j] = dp[i][j - 1]
+- 匹配多个，dp[i][j] = dp[i - 1][j], 这里意思是，如果i-1能被匹配上，那么我们再多匹配s的第i个字符也没关系。
+
+### code
+```
+class Solution {
+public:
+    bool isSame(char a, char b) {
+        return a == b || b == '.';
+    }
+
+    bool isMatch(string s, string p) {
+        vector<vector<bool>> dp;
+
+        dp.resize(s.size() + 1, vector<bool>(p.size() + 1, false));
+        dp[0][0] = true;
+        for (int i = 1; i <= p.size(); ++i) {
+            if (p[i - 1] == '*') {
+                dp[0][i] = dp[0][i - 2];
+            }
+            // cout<<dp[0][i]<<" ";
+        }
+        // cout<<endl<<endl;
+
+        for (int i = 1; i <= s.size(); ++i) {
+            for (int j = 1; j <= p.size(); ++j) {
+                if (p[j - 1] == '*') {
+                    dp[i][j] = (isSame(s[i - 1], p[j - 2]) && (dp[i][j - 1] || dp[i - 1][j])) || dp[i][j - 2];
+                } else {
+                    dp[i][j] = (isSame(s[i - 1], p[j - 1]) && dp[i - 1][j - 1]);
+                }
+                // cout<<dp[i][j]<<" ";
+            }
+            // cout<<endl;
+        }
+
+        return dp[s.size()][p.size()];
+    }
+};
+```
+
+## 9
+### mind
+这道题求回文其实不难，难就难在，如何处理溢出的情况。解法使用了把数字一半转置的思路, 需要处理corner case，就是x < 0 或者x能够被10整除的情况，被10整除一定不是回文串，但是10，如果放在解法后面算，就会因为变成 0， 1， 影响后面的结果， 所以需要单独排除。
+
+### code
+```
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if (x < 0 || (x != 0 && x % 10 == 0)) {
+            return false;
+        }
+
+        int y = 0;
+        while (x > y) {
+            y = x % 10 + y * 10;
+            x /= 10;
+        }
+
+        return x == y || x == (y / 10);
+    }
+};
+```
 
 ## 4
 ### 中位数
